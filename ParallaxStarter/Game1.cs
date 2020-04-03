@@ -45,7 +45,7 @@ namespace ParallaxStarter
 
             // TODO: use this.Content to load your game content here
             var spritesheet = Content.Load<Texture2D>("helicopter");
-            var backgroundTexture = Content.Load<Texture2D>("background");
+            var backgroundTexture = Content.Load<Texture2D>("Background");
 
             player = new Player(spritesheet);
             var playerLayer = new ParallaxLayer(this);
