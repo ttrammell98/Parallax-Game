@@ -68,7 +68,7 @@ namespace ParallaxStarter
             var midgroundSprites = new StaticSprite[]
             {
                 new StaticSprite(midgroundTextures[0], new Vector2(0, 0)),
-                new StaticSprite(midgroundTextures[1], new Vector2(3500, 0))
+                new StaticSprite(midgroundTextures[1], new Vector2(3900, 0))
             };
 
             //midground
