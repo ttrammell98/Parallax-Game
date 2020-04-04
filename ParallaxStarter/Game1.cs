@@ -44,7 +44,7 @@ namespace ParallaxStarter
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            var spritesheet = Content.Load<Texture2D>("helicopter");
+            var spritesheet = Content.Load<Texture2D>("fish");
             var backgroundTexture = Content.Load<Texture2D>("Background");
 
             player = new Player(spritesheet);
@@ -152,6 +152,11 @@ namespace ParallaxStarter
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        public int GetHeight()
+        {
+            return graphics.PreferredBackBufferHeight;
         }
     }
 }
