@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AutoScrollController.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="Hook.cs" />
     <Compile Include="IScrollController.cs" />
     <Compile Include="ISprite.cs" />
     <Compile Include="ParallaxLayer.cs" />

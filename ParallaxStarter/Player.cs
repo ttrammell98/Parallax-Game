@@ -12,6 +12,8 @@ namespace ParallaxStarter
 {
     public class Player : ISprite
     {
+        float fishWidth;
+        float fishHeight;
         /// <summary>
         /// A spritesheet containing a helicopter image
         /// </summary>
@@ -46,9 +48,8 @@ namespace ParallaxStarter
         /// <summary>
         /// How fast the player moves
         /// </summary>
-        public float Speed { get; set; } = 100;
+        public float Speed { get; set; } = 200;
 
-        Game1 game;
         /// <summary>
         /// Constructs a player
         /// </summary>
@@ -66,18 +67,29 @@ namespace ParallaxStarter
         public void Update(GameTime gameTime)
         {
             Vector2 direction = Vector2.Zero;
-            float fishWidth = (0.2f * sourceRect.Width);
-            float fishHeight = (0.2f * sourceRect.Height);
+            fishWidth = (0.2f * sourceRect.Width);
+            fishHeight = (0.2f * sourceRect.Height);
+            bool canGoBackwards = false;
+            bool canGoForward = false;
 
+            if (Position.X > 200)
+            {
+                canGoBackwards = true;
+            }
+
+            if(Position.X < 27181)
+            {
+                canGoForward = true;
+            }
 
             // Override with keyboard input
             var keyboard = Keyboard.GetState();
-            if(keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.A))
+            if((keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.A)) && canGoBackwards)
             {
                 direction.X -= 1;
                 angle = 0;
             }
-            if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D)) 
+            if (keyboard.IsKeyDown(Keys.Right) || keyboard.IsKeyDown(Keys.D) && canGoForward) 
             {
                 direction.X += 1;
                 angle = 0;
@@ -116,6 +128,18 @@ namespace ParallaxStarter
         {
             // Render the helicopter, rotating about the rotors
             spriteBatch.Draw(spritesheet, Position, sourceRect, Color.White, angle, origin, 0.2f, SpriteEffects.None, 0.7f);
+        }
+
+        public bool CollidesWithHook(Hook hook)
+        {
+            if ((hook.Position.X < Position.X + fishWidth) && (Position.X < (hook.Position.X + (hook.sourceRect.Width*0.55f))) && (hook.Position.Y < Position.Y + fishHeight) && (Position.Y < hook.Position.Y + (hook.sourceRect.Height*0.55f)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
     }

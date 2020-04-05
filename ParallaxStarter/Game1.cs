@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System;
 
 namespace ParallaxStarter
 {
@@ -14,6 +15,7 @@ namespace ParallaxStarter
         SpriteBatch spriteBatch;
 
         Player player;
+        Hook hook;
 
         public Game1()
         {
@@ -53,6 +55,14 @@ namespace ParallaxStarter
             playerLayer.DrawOrder = 2;
             Components.Add(playerLayer);
 
+            // Hook
+            var hookTexture = Content.Load<Texture2D>("hook");
+            hook = new Hook(hookTexture);
+            var hookLayer = new ParallaxLayer(this);
+            hookLayer.Sprites.Add(hook);
+            hookLayer.DrawOrder = 2;
+            Components.Add(hookLayer);
+
             var backgroundSprite = new StaticSprite(backgroundTexture, new Vector2(0, 0));
             var backgroundLayer = new ParallaxLayer(this);
             backgroundLayer.Sprites.Add(backgroundSprite);
@@ -85,7 +95,10 @@ namespace ParallaxStarter
                 Content.Load<Texture2D>("foreground1"),
                 Content.Load<Texture2D>("foreground2"),
                 Content.Load<Texture2D>("foreground3"),
-                Content.Load<Texture2D>("foreground4")
+                Content.Load<Texture2D>("foreground4"),
+                Content.Load<Texture2D>("foreground5"),
+                Content.Load<Texture2D>("foreground6"),
+                Content.Load<Texture2D>("foreground7")
             };
 
             var foregroundSprites = new List<StaticSprite>();
@@ -113,6 +126,8 @@ namespace ParallaxStarter
             midgroundLayer.ScrollController = new PlayerTrackingScrollController(player, 0.4f);
             playerLayer.ScrollController = new PlayerTrackingScrollController(player, 1.0f);
             foregroundLayer.ScrollController = new PlayerTrackingScrollController(player, 1.0f);
+            hookLayer.ScrollController = new PlayerTrackingScrollController(player, 1.0f);
+
 
         }
 
@@ -137,6 +152,12 @@ namespace ParallaxStarter
 
             // TODO: Add your update logic here
             player.Update(gameTime);
+            hook.Update(gameTime);
+
+            if (player.CollidesWithHook(hook))
+            {
+                Exit();
+            }
 
             base.Update(gameTime);
         }
