@@ -8,22 +8,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ParallaxStarter
 {
-    public class Hook : ISprite
+    public class Coin : ISprite
     {
         /// <summary>
-        /// A spritesheet containing the hook image
+        /// A spritesheet containing the coin image
         /// </summary>
         Texture2D spritesheet;
 
         /// <summary>
-        /// The portion of the spritesheet that is the hook
+        /// The portion of the spritesheet that is the coin
         /// </summary>
         public Rectangle sourceRect = new Rectangle
         {
             X = 0,
             Y = 0,
-            Width = 470,
-            Height = 905
+            Width = 512,
+            Height = 512
         };
 
         /// <summary>
@@ -32,39 +32,39 @@ namespace ParallaxStarter
         Vector2 origin = new Vector2(0, 0);
 
         /// <summary>
-        /// The hook's position in the world
+        /// The coin's position in the world
         /// </summary>
         public Vector2 Position;
 
         /// <summary>
-        /// Speed of the hook
+        /// Speed of the coin
         /// </summary>
-        int speed = 75;
+        int speed = 85;
 
         /// <summary>
-        /// Random for hook's spawn
+        /// Random for coin's spawn
         /// </summary>
         public Random random;
 
         /// <summary>
-        /// Want to hook to be coming from right to left
+        /// Want coin to be coming from right to left
         /// </summary>
         Vector2 direction = new Vector2(-1, 0);
 
 
         /// <summary>
-        /// Constructs a hook
+        /// Constructs coin
         /// </summary>
         /// <param name="spritesheet">The present's spritesheet</param>
-        public Hook(Texture2D spritesheet, Player player)
+        public Coin(Texture2D spritesheet, Player player, Random r)
         {
             this.spritesheet = spritesheet;
-            this.random = new Random();
-            spawnHook(player);
+            this.random = r;
+            spawnCoin(player);
         }
 
         /// <summary>
-        /// Updates the hook
+        /// Updates the coin
         /// </summary>
         /// <param name="gameTime">The GameTime object</param>
         public void Update(GameTime gameTime, Player player)
@@ -74,7 +74,7 @@ namespace ParallaxStarter
         }
 
         /// <summary>
-        /// Draws the hook sprite
+        /// Draws the coin sprite
         /// </summary>
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -82,7 +82,11 @@ namespace ParallaxStarter
             spriteBatch.Draw(spritesheet, Position, sourceRect, Color.White, 0, origin, 0.055f, SpriteEffects.None, 0.7f);
         }
 
-        public void spawnHook(Player player)
+        /// <summary>
+        /// Spawns coin
+        /// </summary>
+        /// <param name="player"></param>
+        public void spawnCoin(Player player)
         {
             Position = new Vector2(
                 player.Position.X + 600,
@@ -90,22 +94,34 @@ namespace ParallaxStarter
                 );
         }
 
+        /// <summary>
+        /// Checks to see if the coin is off the screen
+        /// </summary>
+        /// <param name="player"></param>
         public void checkOffScreen(Player player)
         {
             if (Position.X < player.Position.X - 200)
             {
-                spawnHook(player);
+                spawnCoin(player);
             }
         }
 
-        public float getHookWidth()
+        /// <summary>
+        /// gets the scaled width of the coin
+        /// </summary>
+        /// <returns>scaled width of the coin</returns>
+        public float getWidth()
         {
-            return (0.055f * sourceRect.Width);
+            return (0.0625f * sourceRect.Width);
         }
 
-        public float getHookHeight()
+        /// <summary>
+        /// gets the scaled height of the coin
+        /// </summary>
+        /// <returns>scaled height of the coin</returns>
+        public float getHeight()
         {
-            return (0.055f * sourceRect.Height);
+            return (0.0625f * sourceRect.Height);
         }
     }
 }

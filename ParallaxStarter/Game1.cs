@@ -13,10 +13,15 @@ namespace ParallaxStarter
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        SpriteFont spriteFont;
+        int score = 0;
+        int lives = 3;
         Player player;
         Hook hook;
-
+        Font font;
+        Candy candy;
+        Coin coin;
+        Random r = new Random();
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -45,6 +50,14 @@ namespace ParallaxStarter
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //Font
+            spriteFont = Content.Load<SpriteFont>("Score");
+            font = new Font(spriteFont, score, lives);
+            var fontLayer = new ParallaxLayer(this);
+            fontLayer.Sprites.Add(font);
+            fontLayer.DrawOrder = 5;
+            Components.Add(fontLayer);
+
             // TODO: use this.Content to load your game content here
             var spritesheet = Content.Load<Texture2D>("fish");
             var backgroundTexture = Content.Load<Texture2D>("Background");
@@ -55,13 +68,31 @@ namespace ParallaxStarter
             playerLayer.DrawOrder = 2;
             Components.Add(playerLayer);
 
-            // Hook
+         
+            //Hook
             var hookTexture = Content.Load<Texture2D>("hook");
-            hook = new Hook(hookTexture);
+            hook = new Hook(hookTexture, player);
             var hookLayer = new ParallaxLayer(this);
             hookLayer.Sprites.Add(hook);
             hookLayer.DrawOrder = 2;
             Components.Add(hookLayer);
+
+            //Candy
+            var candyTexture = Content.Load<Texture2D>("candy");
+            candy = new Candy(candyTexture, player);
+            var candyLayer = new ParallaxLayer(this);
+            candyLayer.Sprites.Add(candy);
+            candyLayer.DrawOrder = 2;
+            Components.Add(candyLayer);
+
+
+            //Coin
+            var coinTexture = Content.Load<Texture2D>("coin");
+            coin = new Coin(coinTexture, player, r);
+            var coinLayer = new ParallaxLayer(this);
+            coinLayer.Sprites.Add(coin);
+            coinLayer.DrawOrder = 2;
+            Components.Add(coinLayer);
 
             var backgroundSprite = new StaticSprite(backgroundTexture, new Vector2(0, 0));
             var backgroundLayer = new ParallaxLayer(this);
@@ -115,20 +146,17 @@ namespace ParallaxStarter
             }
 
             foregroundLayer.DrawOrder = 4; //draw order in front of the player layer
-            //var foregroundScrollController = foregroundLayer.ScrollController as AutoScrollController;
-            //foregroundScrollController.Speed = 80f;
-            Components.Add(foregroundLayer);
 
-            //var playerScrollController = playerLayer.ScrollController as AutoScrollController;
-            //playerScrollController.Speed = 80f;
+            Components.Add(foregroundLayer);
 
             backgroundLayer.ScrollController = new PlayerTrackingScrollController(player, 0.1f);
             midgroundLayer.ScrollController = new PlayerTrackingScrollController(player, 0.4f);
             playerLayer.ScrollController = new PlayerTrackingScrollController(player, 1.0f);
             foregroundLayer.ScrollController = new PlayerTrackingScrollController(player, 1.0f);
             hookLayer.ScrollController = new PlayerTrackingScrollController(player, 1.0f);
-
-
+            candyLayer.ScrollController = new PlayerTrackingScrollController(player, 1.0f);
+            coinLayer.ScrollController = new PlayerTrackingScrollController(player, 1.0f);
+            fontLayer.ScrollController = new PlayerTrackingScrollController(player, 0.0f);
         }
 
         /// <summary>
@@ -147,17 +175,25 @@ namespace ParallaxStarter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            var keyboard = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            player.Update(gameTime);
-            hook.Update(gameTime);
-
-            if (player.CollidesWithHook(hook))
+            if (lives <= 0)
             {
                 Exit();
             }
+
+            // TODO: Add your update logic here
+            player.Update(gameTime);
+            hook.Update(gameTime, player);
+            candy.Update(gameTime, player);
+            coin.Update(gameTime, player);
+            font.Update(gameTime, score, lives);
+
+            checkHookCollision();
+            checkCandyCollision();
+            checkCoinCollision();
 
             base.Update(gameTime);
         }
@@ -178,6 +214,36 @@ namespace ParallaxStarter
         public int GetHeight()
         {
             return graphics.PreferredBackBufferHeight;
+        }
+
+        private void checkHookCollision()
+        {
+            if (player.Position.X < hook.Position.X + hook.getHookWidth() && player.Position.X + player.getFishWidth() > hook.Position.X
+             && player.Position.Y < hook.Position.Y + hook.getHookHeight() && player.Position.Y + player.getFishHeight() > hook.Position.Y)
+            {
+                hook.spawnHook(player);
+                lives--;
+            }
+        }
+
+        private void checkCandyCollision()
+        {
+            if (player.Position.X < candy.Position.X + candy.getWidth() && player.Position.X + player.getFishWidth() > candy.Position.X
+             && player.Position.Y < candy.Position.Y + candy.getHeight() && player.Position.Y + player.getFishHeight() > candy.Position.Y)
+            {
+                candy.spawnCandy(player); 
+                lives++;
+            }
+        }
+
+        private void checkCoinCollision()
+        {
+            if (player.Position.X < coin.Position.X + coin.getWidth() && player.Position.X + player.getFishWidth() > coin.Position.X
+             && player.Position.Y < coin.Position.Y + coin.getHeight() && player.Position.Y + player.getFishHeight() > coin.Position.Y)
+            {
+                coin.spawnCoin(player);
+                score++;
+            }
         }
     }
 }

@@ -12,15 +12,13 @@ namespace ParallaxStarter
 {
     public class Player : ISprite
     {
-        float fishWidth;
-        float fishHeight;
         /// <summary>
-        /// A spritesheet containing a helicopter image
+        /// A spritesheet containing a player image
         /// </summary>
         Texture2D spritesheet;
 
         /// <summary>
-        /// The portion of the spritesheet that is the helicopter
+        /// The portion of the spritesheet that is the fish
         /// </summary>
         Rectangle sourceRect = new Rectangle
         {
@@ -31,12 +29,12 @@ namespace ParallaxStarter
         };
 
         /// <summary>
-        /// The origin of the helicopter sprite
+        /// The origin of the player sprite
         /// </summary>
         Vector2 origin = new Vector2(0, 0);
 
         /// <summary>
-        /// The angle the helicopter should tilt
+        /// The angle the fish should tilt
         /// </summary>
         float angle = 0;
 
@@ -67,8 +65,6 @@ namespace ParallaxStarter
         public void Update(GameTime gameTime)
         {
             Vector2 direction = Vector2.Zero;
-            fishWidth = (0.2f * sourceRect.Width);
-            fishHeight = (0.2f * sourceRect.Height);
             bool canGoBackwards = false;
             bool canGoForward = false;
 
@@ -110,10 +106,10 @@ namespace ParallaxStarter
                 angle = 0;
                 Position.Y = 0;
             }
-            if (Position.Y + fishHeight >= 480)
+            if (Position.Y + getFishHeight() >= 480)
             {
                 angle = 0;
-                Position.Y = 480 - fishHeight;
+                Position.Y = 480 - getFishHeight();
             }
          
             // Move the fish
@@ -126,20 +122,25 @@ namespace ParallaxStarter
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            // Render the helicopter, rotating about the rotors
             spriteBatch.Draw(spritesheet, Position, sourceRect, Color.White, angle, origin, 0.2f, SpriteEffects.None, 0.7f);
         }
 
-        public bool CollidesWithHook(Hook hook)
+        /// <summary>
+        /// gets the scaled width of the fish
+        /// </summary>
+        /// <returns>fish width</returns>
+        public float getFishWidth()
         {
-            if ((hook.Position.X < Position.X + fishWidth) && (Position.X < (hook.Position.X + (hook.sourceRect.Width*0.55f))) && (hook.Position.Y < Position.Y + fishHeight) && (Position.Y < hook.Position.Y + (hook.sourceRect.Height*0.55f)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (0.2f * sourceRect.Width); 
+        }
+
+        /// <summary>
+        /// gets the scaled height of the fish
+        /// </summary>
+        /// <returns>fish height</returns>
+        public float getFishHeight()
+        {
+            return (0.2f * sourceRect.Height);
         }
 
     }

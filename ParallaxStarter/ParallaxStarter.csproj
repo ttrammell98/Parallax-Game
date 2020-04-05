@@ -42,6 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AutoScrollController.cs" />
+    <Compile Include="Candy.cs" />
+    <Compile Include="Coin.cs" />
+    <Compile Include="Font.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Hook.cs" />
     <Compile Include="IScrollController.cs" />
