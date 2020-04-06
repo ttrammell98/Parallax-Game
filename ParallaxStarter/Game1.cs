@@ -116,8 +116,6 @@ namespace ParallaxStarter
             var midgroundLayer = new ParallaxLayer(this);
             midgroundLayer.Sprites.AddRange(midgroundSprites);
             midgroundLayer.DrawOrder = 1;
-            //var midgroundScrollController = midgroundLayer.ScrollController as AutoScrollController;
-            //midgroundScrollController.Speed = 40f;
             Components.Add(midgroundLayer);
 
             //foreground
@@ -211,11 +209,18 @@ namespace ParallaxStarter
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Gets the height of the game
+        /// </summary>
+        /// <returns>Height of the game</returns>
         public int GetHeight()
         {
             return graphics.PreferredBackBufferHeight;
         }
 
+        /// <summary>
+        ///Checks if player collides with hook and updates game appropriately
+        /// </summary>
         private void checkHookCollision()
         {
             if (player.Position.X < hook.Position.X + hook.getHookWidth() && player.Position.X + player.getFishWidth() > hook.Position.X
@@ -226,6 +231,9 @@ namespace ParallaxStarter
             }
         }
 
+        /// <summary>
+        /// Checks if player collides with the candy and updates game appropriately
+        /// </summary>
         private void checkCandyCollision()
         {
             if (player.Position.X < candy.Position.X + candy.getWidth() && player.Position.X + player.getFishWidth() > candy.Position.X
@@ -236,6 +244,9 @@ namespace ParallaxStarter
             }
         }
 
+        /// <summary>
+        /// Checks if player collides with the coin and updates game appropriately
+        /// </summary>
         private void checkCoinCollision()
         {
             if (player.Position.X < coin.Position.X + coin.getWidth() && player.Position.X + player.getFishWidth() > coin.Position.X

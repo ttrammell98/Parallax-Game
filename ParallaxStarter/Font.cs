@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 namespace ParallaxStarter
 {
     /// <summary>
-    /// Text Sprite class for layers
+    /// Font Sprite class
     /// </summary>
     public class Font : ISprite
     {
         /// <summary>
-        /// Font for text
+        /// Spritefont object
         /// </summary>
         SpriteFont font;
 
@@ -24,11 +24,11 @@ namespace ParallaxStarter
         int score;
 
         /// <summary>
-        /// Number of lives for player
+        /// Players # of lives
         /// </summary>
         int lives;
         /// <summary>
-        /// Constructor for Text class
+        /// Constructor for Font class
         /// </summary>
         /// <param name="font"></param>
         public Font(SpriteFont font, int score, int lives)
@@ -39,7 +39,7 @@ namespace ParallaxStarter
         }
 
         /// <summary>
-        /// Update for the text
+        /// Updates the font/on-screen text
         /// </summary>
         /// <param name="gameTime">The GameTime object</param>
         public void Update(GameTime gameTime, int score, int lives)
@@ -49,7 +49,7 @@ namespace ParallaxStarter
         }
 
         /// <summary>
-        /// Draw function from Interface
+        /// Draws the font/text 
         /// </summary>
         /// <param name="spriteBatch"></param>
         /// <param name="gameTime"></param>

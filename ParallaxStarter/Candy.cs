@@ -109,7 +109,7 @@ namespace ParallaxStarter
         /// <param name="player">game player</param>
         public void respawnCandy(Player player)
         {
-            if (Position.X < (player.Position.X - 200) - 600)
+            if (Position.X < (player.Position.X - 200) - 600) //waiting for player to move a bit more forwards before spawning another candy
             {
                 spawnCandy(player);
             }

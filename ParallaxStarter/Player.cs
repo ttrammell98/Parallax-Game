@@ -68,7 +68,7 @@ namespace ParallaxStarter
             bool canGoBackwards = false;
             bool canGoForward = false;
 
-            if (Position.X > 200)
+            if (Position.X > 200) //we don't want the player going backwards at the start
             {
                 canGoBackwards = true;
             }
@@ -101,6 +101,7 @@ namespace ParallaxStarter
                 angle = 0.5f * direction.Y;
             }
 
+            //Bounds checking against vertical bounds
             if(Position.Y <= 0)
             {
                 angle = 0;
